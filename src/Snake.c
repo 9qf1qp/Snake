@@ -2,4 +2,113 @@
 #include<conio.h>
 #include<stdlib.h>
 int i,j,height=20,width=20,gameover,score;
-int x,y,fruit,fruity,flag;
+int x,y,fruit,fruity,fruitx,flag;
+
+void draw()
+{
+  for (i=0;i<height;i++){
+    for (j = 0; j<width; j++){
+      if (i==0 || i == width -1 || j == 0 || j == height -1) {
+        printf("#");
+      }
+      else {
+        printf(" ");
+      }
+    }
+    printf("\n");
+  }
+}
+
+
+/*Using rand()%20 because the size of the boundary is 
+length = 20 and width = 20 so the fruit will generate
+within the boundary.*/
+
+void setup()
+{
+  gameover=0;
+  x=height/2;
+  y=width/2;
+  label1:
+    fruit=rand()%20;
+    if (fruit==0)
+    goto label1;
+  label2:
+    fruity=rand()%20;
+    if (fruity==0)
+      goto label2;
+    score=0;
+}
+
+void input ()
+{
+  if (kbhit())
+  {
+    switch(getch())
+    {
+      case 'a':
+        flag=1;
+        break;
+      case 's':
+        flag=2;
+        break;
+      case 'd':
+        flag=3;
+        break;
+      case 'w':
+        flag=4;
+        break;
+      case 'x':
+        gameover=1;
+        break;
+    }
+  }
+}
+
+void logic() 
+{
+  sleep(0.01);
+  switch(flag)
+  {
+    case 1:
+      y--;
+      break;
+    case 2:
+      x++;
+      break;
+    case 3:
+      y++;
+      break;
+    case 4:
+      x--;
+      break;
+    default:
+      break;
+  }
+  if(x<0 || x>height || y<0 || y>width){
+    gameover=1;
+  }
+  if(x==fruitx&&y==fruity){
+        label4:
+      fruity=rand()%20;
+      if (fruity==0){
+        goto label4;
+      }
+    score+=10;
+    }
+}
+
+void main() 
+{ 
+    // Generate boundary 
+    setup(); 
+  
+    // Until the game is over 
+    while (!gameover) { 
+  
+        // Function Call 
+        draw(); 
+        input(); 
+        logic(); 
+    } 
+} 
